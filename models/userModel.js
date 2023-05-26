@@ -1,11 +1,32 @@
-class User {
-  constructor(userID, username, password, createdAt, updatedAt) {
-    this.userID = userID;
-    this.username = username;
-    this.password = password;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
-}
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    'User',
+    {
+      userID: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: 'users',
+    },
+  );
 
-module.exports = User;
+  return User;
+};
