@@ -1,9 +1,12 @@
-const response = (status, message, data) => ({
+const responseClient = (status, message, data) => ({
   status,
   message,
   data,
 });
 
+const responseCustom = {};
+
 module.exports = {
-  response,
+  responseClient,
+  responseCustom,
 };
