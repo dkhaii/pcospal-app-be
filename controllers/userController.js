@@ -3,7 +3,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../models/models');
-const { response } = require('../helper');
+const { responseClient, responseCustom } = require('../helper');
 
 const { JWT_SECRET_KEY } = process.env;
 const User = database.user;
@@ -12,39 +12,41 @@ const createUser = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json(
-      response('fail', 'please enter the username', []),
-    );
+    responseCustom.message = 'please fill in the username';
   }
 
   if (!password) {
-    return res.status(400).json(
-      response('fail', 'please enter the password', []),
-    );
+    responseCustom.message = 'please fill in the password';
+  }
+
+  if (Object.keys(responseCustom).length > 0) {
+    return res.status(400).json(responseCustom);
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
-
   const userID = nanoid(12);
-
   const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const updatedAt = createdAt;
 
   try {
-    const user = await User.create({
+    const createdData = {
       userID,
       username,
       password: hashedPassword,
       createdAt,
       updatedAt,
-    });
+    };
+
+    const user = await User.create(createdData);
+
+    console.log(user);
 
     return res.status(200).json(
-      response('success', 'user created successfully', user),
+      responseClient('success', 'user created successfully', user),
     );
   } catch (error) {
     return res.status(500).json(
-      response('failed', 'error', error),
+      responseClient('failed', 'error', error),
     );
   }
 };
@@ -53,15 +55,15 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json(
-      response('error', 'please input username', []),
-    );
+    responseCustom.message = 'please fill in the username';
   }
 
   if (!password) {
-    return res.status(400).json(
-      response('error', 'please input password', []),
-    );
+    responseCustom.message = 'please fill in the password';
+  }
+
+  if (Object.keys(responseCustom).length > 0) {
+    return res.status(400).json(responseCustom);
   }
 
   try {
@@ -72,17 +74,15 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json(
-        response('failed', 'user not found', []),
-      );
+      responseCustom.message = 'user not found';
+      return res.status(404).json(responseCustom);
     }
 
     const isPassword = bcrypt.compareSync(password, user.password);
 
     if (!isPassword) {
-      return res.status(401).json(
-        response('failed', 'wrong password', []),
-      );
+      responseCustom.message = 'wrong password';
+      return res.status(401).json(responseCustom);
     }
 
     jwt.sign(
@@ -100,7 +100,13 @@ const loginUser = async (req, res) => {
         }
 
         return res.status(200).json(
-          response('success', 'login successfully', token),
+          responseClient('success', 'login successfully', {
+            user: {
+              userID: user.userID,
+              username: user.username,
+            },
+            token,
+          }),
         );
       },
     );
@@ -108,7 +114,61 @@ const loginUser = async (req, res) => {
     return 0;
   } catch (error) {
     return res.status(500).json(
-      response('failed', 'error', error),
+      responseClient('failed', 'error', error),
+    );
+  }
+};
+
+const updateUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username) {
+    responseCustom.message = 'please fill in the username';
+  }
+
+  if (!password) {
+    responseCustom.message = 'please fill in the password';
+  }
+
+  if (Object.keys(responseCustom).length > 0) {
+    return res.status(400).json(responseCustom);
+  }
+
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+  try {
+    const { user } = req;
+    console.log(user);
+
+    if (!user) {
+      responseCustom.message = 'user not found';
+      return res.status(404).json(responseCustom);
+    }
+
+    const updatedData = {
+      username,
+      password: hashedPassword,
+      updatedAt,
+    };
+
+    console.log(updatedData);
+
+    await User.update(
+      updatedData,
+      {
+        where: {
+          userID: user.userID,
+        },
+      },
+    );
+
+    return res.status(200).json(
+      responseClient('success', 'user updated successfully', user),
+    );
+  } catch (error) {
+    return res.status(500).json(
+      responseClient('error', 'failed to update', error),
     );
   }
 };
@@ -116,4 +176,5 @@ const loginUser = async (req, res) => {
 module.exports = {
   createUser,
   loginUser,
+  updateUser,
 };
