@@ -11,6 +11,12 @@
 		"ecmaVersion": "latest"
 	},
 	"rules": {
-		"no-console": "off"
+		"no-console": "off",
+		"no-plusplus": [
+			"error",
+			{
+				"allowForLoopAfterthoughts": true
+			}
+		]
 	}
 }
