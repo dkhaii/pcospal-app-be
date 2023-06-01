@@ -74,15 +74,17 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      responseCustom.message = 'user not found';
-      return res.status(404).json(responseCustom);
+      return res.status(404).json(
+        responseClient('error', 'user not found', []),
+      );
     }
 
     const isPassword = bcrypt.compareSync(password, user.password);
 
     if (!isPassword) {
-      responseCustom.message = 'wrong password';
-      return res.status(401).json(responseCustom);
+      return res.status(401).json(
+        responseClient('error', 'wrong password', []),
+      );
     }
 
     jwt.sign(
