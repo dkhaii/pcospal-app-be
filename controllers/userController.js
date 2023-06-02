@@ -24,13 +24,13 @@ const createUser = async (req, res) => {
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const userID = nanoid(12);
+  const userId = nanoid(12);
   const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const updatedAt = createdAt;
 
   try {
     const createdData = {
-      userID,
+      userId,
       username,
       password: hashedPassword,
       createdAt,
@@ -89,7 +89,7 @@ const loginUser = async (req, res) => {
 
     jwt.sign(
       {
-        userID: user.userID,
+        userId: user.userId,
         username: user.username,
       },
       JWT_SECRET_KEY,
@@ -104,7 +104,7 @@ const loginUser = async (req, res) => {
         return res.status(200).json(
           responseClient('success', 'login successfully', {
             user: {
-              userID: user.userID,
+              userId: user.userId,
               username: user.username,
             },
             token,
@@ -160,7 +160,7 @@ const updateUser = async (req, res) => {
       updatedData,
       {
         where: {
-          userID: user.userID,
+          userId: user.userId,
         },
       },
     );
