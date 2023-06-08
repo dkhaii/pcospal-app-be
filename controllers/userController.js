@@ -121,62 +121,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username) {
-    responseCustom.message = 'please fill in the username';
-  }
-
-  if (!password) {
-    responseCustom.message = 'please fill in the password';
-  }
-
-  if (Object.keys(responseCustom).length > 0) {
-    return res.status(400).json(responseCustom);
-  }
-
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  const updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-  try {
-    const { user } = req;
-    console.log(user);
-
-    if (!user) {
-      responseCustom.message = 'user not found';
-      return res.status(404).json(responseCustom);
-    }
-
-    const updatedData = {
-      username,
-      password: hashedPassword,
-      updatedAt,
-    };
-
-    console.log(updatedData);
-
-    await User.update(
-      updatedData,
-      {
-        where: {
-          userId: user.userId,
-        },
-      },
-    );
-
-    return res.status(200).json(
-      responseClient('success', 'user updated successfully', user),
-    );
-  } catch (error) {
-    return res.status(500).json(
-      responseClient('error', 'failed to update', error),
-    );
-  }
-};
-
 module.exports = {
   createUser,
   loginUser,
-  updateUser,
 };

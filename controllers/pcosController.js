@@ -41,6 +41,14 @@ const validateDatas = (userAnswer) => {
   return responseError;
 };
 
+const validateCycleData = (cycle) => {
+  if (cycle === 'regular') {
+    return 2;
+  }
+
+  return 4;
+};
+
 const filterDataOutput = (datas) => {
   const filteredData = {};
 
@@ -101,6 +109,8 @@ const getUserAnswer = (req, res) => {
 
   const validatedYesNoDatas = validateYesNoDatas(yesNoDatas);
 
+  const validatedCycleData = validateCycleData(cycle);
+
   const datas = [
     {
       type: 'age',
@@ -116,7 +126,7 @@ const getUserAnswer = (req, res) => {
     },
     {
       type: 'cycle',
-      data: cycle,
+      data: validatedCycleData,
     },
     {
       type: 'yearsOfMarriage',

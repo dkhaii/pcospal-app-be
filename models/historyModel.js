@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
-  const BmiHistory = sequelize.define(
-    'BmiHistory',
+  const History = sequelize.define(
+    'History',
     {
-      bmiId: {
+      historyId: {
         type: DataTypes.STRING,
         primaryKey: true,
       },
-      bmiData: {
-        type: DataTypes.FLOAT,
+      datas: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       createdAt: {
@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'bmi_history',
+      tableName: 'histories',
     },
   );
 
-  return BmiHistory;
+  return History;
 };
