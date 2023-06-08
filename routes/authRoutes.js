@@ -1,18 +1,15 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyAuthMiddleware');
-const { updateUser } = require('../controllers/userController');
 const getUserAnswer = require('../controllers/pcosController');
-const { calculateBmi, showAllBmiHistory } = require('../controllers/bmiCalculatorController');
+const { createHistory, showAllUserHistory } = require('../controllers/historyController');
 
 const authRouter = express.Router();
-
-authRouter.put('/user', verifyToken, updateUser);
 
 // pcos feature
 authRouter.get('/pcos', verifyToken, getUserAnswer);
 
 // bmi feature
-authRouter.post('/bmi', verifyToken, calculateBmi);
-authRouter.get('/bmi', verifyToken, showAllBmiHistory);
+authRouter.post('/pcos/history', verifyToken, createHistory);
+authRouter.get('/pcos/history', verifyToken, showAllUserHistory);
 
 module.exports = authRouter;

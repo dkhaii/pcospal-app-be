@@ -18,11 +18,11 @@ database.sequelize = sequelize;
 database.sequelize.sync({ force: false });
 
 database.user = require('./userModel')(sequelize, Sequelize);
-database.bmiHistory = require('./bmiHistoryModel')(sequelize, Sequelize);
+database.history = require('./historyModel')(sequelize, Sequelize);
 
-database.bmiHistory.belongsTo(database.user, {
+database.history.belongsTo(database.user, {
   foreignKey: 'userId',
 });
-database.user.hasMany(database.bmiHistory);
+database.user.hasMany(database.history);
 
 module.exports = database;
