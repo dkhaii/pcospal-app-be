@@ -7,6 +7,7 @@ const {
   DB_PASSWORD,
   DB_DATABASE,
   DB_DIALECT,
+  DB_SOCKET,
 } = process.env;
 
 const database = new Sequelize(
@@ -16,6 +17,9 @@ const database = new Sequelize(
   {
     host: DB_HOST,
     dialect: DB_DIALECT,
+    dialectOptions: {
+      socketPath: DB_SOCKET,
+    },
   },
 );
 
