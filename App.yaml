@@ -1,0 +1,19 @@
+runtime: nodejs18
+env: flex
+env_variables: 
+  #application
+  PORT: 8080
+
+  #database
+  DB_HOST: localhost
+  DB_USER: root
+  DB_PASSWORD:
+  DB_DATABASE: pcospal
+  DB_DIALECT: mysql
+  DB_SOCKET: pcos-pal-1st-test:asia-southeast2:pcospal
+
+  #jwt
+  JWT_SECRET_KEY: MuchSecretVerySecureSoSafe
+
+  #openai
+  OPENAI_API_KEY: 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
