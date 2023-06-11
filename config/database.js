@@ -1,24 +1,13 @@
-require('dotenv');
 const { Sequelize } = require('sequelize');
 
-const {
-  DB_HOST,
-  DB_USER,
-  DB_PASSWORD,
-  DB_DATABASE,
-  DB_DIALECT,
-  DB_SOCKET,
-} = process.env;
-
 const database = new Sequelize(
-  DB_DATABASE,
-  DB_USER,
-  DB_PASSWORD,
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: DB_HOST,
-    dialect: DB_DIALECT,
+    dialect: process.env.DB_DIALECT,
     dialectOptions: {
-      socketPath: DB_SOCKET,
+      socketPath: `/cloudsql/${process.env.DB_SOCKET}`,
     },
   },
 );
