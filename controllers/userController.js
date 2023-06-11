@@ -1,11 +1,9 @@
-require('dotenv');
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../models/models');
 const { responseClient, responseCustom } = require('../helper');
 
-const { JWT_SECRET_KEY } = process.env;
 const User = database.user;
 
 const createUser = async (req, res) => {
@@ -90,7 +88,7 @@ const loginUser = async (req, res) => {
         userId: user.userId,
         username: user.username,
       },
-      JWT_SECRET_KEY,
+      process.env.JWT_SECRET_KEY,
       {
         expiresIn: 86400,
       },

@@ -1,8 +1,5 @@
-require('dotenv');
 const { Configuration, OpenAIApi } = require('openai');
 const { responseCustom, gptResponse, responseClient } = require('../helper');
-
-const { OPENAI_API_KEY } = process.env;
 
 const formatJsonData = (jsonData) => {
   const formattedData = [];
@@ -26,7 +23,7 @@ const formatJsonData = (jsonData) => {
 
 const generateData = async (req, res) => {
   const configuration = new Configuration({
-    apiKey: OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
