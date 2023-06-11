@@ -1,6 +1,15 @@
 const {
-  validateNumberData, responseClient,
+  responseClient,
+  responseCustom,
 } = require('../helper');
+
+const validateNumberData = (value) => {
+  if (typeof value !== 'number') {
+    return false;
+  }
+
+  return true;
+};
 
 const validateYesNo = (value) => {
   if (value === 'Yes') {
@@ -63,7 +72,17 @@ const filterDataOutput = (datas) => {
   return filteredData;
 };
 
-const getUserAnswer = (req, res) => {
+const assignUserAnswer = (datas) => {
+  const userAnswer = datas;
+
+  responseCustom.datas = datas;
+  console.log('data responseCustom');
+  console.log(responseCustom.datas);
+
+  return userAnswer;
+};
+
+const createUserAnswer = async (req, res) => {
   const {
     age,
     bmi,
@@ -79,6 +98,37 @@ const getUserAnswer = (req, res) => {
     pimples,
     fastFood,
   } = req.body;
+
+  const numberDatas = [
+    {
+      type: 'age',
+      data: age,
+    },
+    {
+      type: 'bmi',
+      data: bmi,
+    },
+    {
+      type: 'pulseRate',
+      data: pulseRate,
+    },
+    {
+      type: 'cycle',
+      data: cycle,
+    },
+    {
+      type: 'yearsOfMarriage',
+      data: yearsOfMarriage,
+    },
+    {
+      type: 'hip',
+      data: hip,
+    },
+    {
+      type: 'waist',
+      data: waist,
+    },
+  ];
 
   const yesNoDatas = [
     {
@@ -107,76 +157,31 @@ const getUserAnswer = (req, res) => {
     },
   ];
 
-  const validatedYesNoDatas = validateYesNoDatas(yesNoDatas);
+  const validatedNumberDatas = validateDatas(numberDatas);
 
-  const validatedCycleData = validateCycleData(cycle);
-
-  const datas = [
-    {
-      type: 'age',
-      data: age,
-    },
-    {
-      type: 'bmi',
-      data: bmi,
-    },
-    {
-      type: 'pulseRate',
-      data: pulseRate,
-    },
-    {
-      type: 'cycle',
-      data: validatedCycleData,
-    },
-    {
-      type: 'yearsOfMarriage',
-      data: yearsOfMarriage,
-    },
-    {
-      type: 'hip',
-      data: hip,
-    },
-    {
-      type: 'waist',
-      data: waist,
-    },
-    {
-      type: 'weightGain',
-      data: validatedYesNoDatas.weightGain,
-    },
-    {
-      type: 'hairGrowth',
-      data: validatedYesNoDatas.hairGrowth,
-    },
-    {
-      type: 'skinDarkening',
-      data: validatedYesNoDatas.skinDarkening,
-    },
-    {
-      type: 'hairLoss',
-      data: validatedYesNoDatas.hairLoss,
-    },
-    {
-      type: 'pimples',
-      data: validatedYesNoDatas.pimples,
-    },
-    {
-      type: 'fastFood',
-      data: validatedYesNoDatas.fastFood,
-    },
-  ];
-
-  const validatedDatas = validateDatas(datas);
-
-  if (Object.keys(validatedDatas).length > 0) {
-    return res.status(401).json(validatedDatas);
+  if (Object.keys(validatedNumberDatas).length > 0) {
+    return res.status(401).json(validatedNumberDatas);
   }
 
-  const filteredDataOutput = filterDataOutput(datas);
+  const answerDatas = filterDataOutput(numberDatas.concat(yesNoDatas));
+  console.log(answerDatas);
 
-  return res.status(200).json(
-    responseClient('success', 'getting user input', filteredDataOutput),
-  );
+  await assignUserAnswer(answerDatas);
+
+  const filteredNumberDatas = filterDataOutput(numberDatas);
+  const validatedCycleData = validateCycleData(cycle);
+  const validatedYesNoDatas = validateYesNoDatas(yesNoDatas);
+
+  const validatedDatas = {
+    ...filteredNumberDatas,
+    ...validatedCycleData,
+    ...validatedYesNoDatas,
+  };
+  console.log(validatedDatas);
+
+  return res
+    .status(200)
+    .json(responseClient('success', 'getting user input', validatedDatas));
 };
 
-module.exports = getUserAnswer;
+module.exports = createUserAnswer;

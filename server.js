@@ -9,8 +9,8 @@ const app = express();
 const { PORT } = process.env;
 
 app.use(bodyParser.json());
-app.use('/', routes);
-app.use('/auth', authRoutes);
+app.use('/api', routes);
+app.use('/api/auth', authRoutes);
 
 app.listen(PORT, () => {
   console.log(`app is running in port ${PORT}`);

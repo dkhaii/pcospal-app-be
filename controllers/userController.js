@@ -41,13 +41,11 @@ const createUser = async (req, res) => {
 
     console.log(user);
 
-    return res.status(200).json(
-      responseClient('success', 'user created successfully', user),
-    );
+    return res
+      .status(200)
+      .json(responseClient('success', 'user created successfully', user));
   } catch (error) {
-    return res.status(500).json(
-      responseClient('failed', 'error', error),
-    );
+    return res.status(500).json(responseClient('failed', 'error', error));
   }
 };
 
@@ -74,17 +72,17 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json(
-        responseClient('error', 'user not found', []),
-      );
+      return res
+        .status(404)
+        .json(responseClient('error', 'user not found', []));
     }
 
     const isPassword = bcrypt.compareSync(password, user.password);
 
     if (!isPassword) {
-      return res.status(401).json(
-        responseClient('error', 'wrong password', []),
-      );
+      return res
+        .status(401)
+        .json(responseClient('error', 'wrong password', []));
     }
 
     jwt.sign(
@@ -115,9 +113,7 @@ const loginUser = async (req, res) => {
 
     return 0;
   } catch (error) {
-    return res.status(500).json(
-      responseClient('failed', 'error', error),
-    );
+    return res.status(500).json(responseClient('failed', 'error', error));
   }
 };
 
