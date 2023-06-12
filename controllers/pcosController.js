@@ -179,9 +179,9 @@ const createUserAnswer = async (req, res) => {
   };
   console.log(validatedDatas);
 
-  return res
-    .status(200)
-    .json(responseClient('success', 'getting user input', validatedDatas));
+  return res.status(200).json(
+    responseClient('success', 'getting user input', validatedDatas),
+  );
 };
 
 module.exports = createUserAnswer;
