@@ -2,7 +2,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../models/models');
-const { responseClient, responseCustom } = require('../helper');
+const { responseClient } = require('../helper');
 const parseAppYaml = require('../config/environment');
 
 const User = database.user;
@@ -12,15 +12,15 @@ const createUser = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    responseCustom.message = 'please fill in the username';
+    return res.status(400).json(
+      responseClient('error', 'please fill in the username', []),
+    );
   }
 
   if (!password) {
-    responseCustom.message = 'please fill in the password';
-  }
-
-  if (Object.keys(responseCustom).length > 0) {
-    return res.status(400).json(responseCustom);
+    return res.status(400).json(
+      responseClient('error', 'please fill in the password', []),
+    );
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -55,15 +55,15 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    responseCustom.message = 'please fill in the username';
+    return res.status(400).json(
+      responseClient('error', 'please fill in the username', []),
+    );
   }
 
   if (!password) {
-    responseCustom.message = 'please fill in the password';
-  }
-
-  if (Object.keys(responseCustom).length > 0) {
-    return res.status(400).json(responseCustom);
+    return res.status(400).json(
+      responseClient('error', 'please fill in the password', []),
+    );
   }
 
   try {
