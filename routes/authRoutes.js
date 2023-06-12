@@ -7,14 +7,18 @@ const {
 } = require('../controllers/historyController');
 const createTipsAndTrick = require('../controllers/openaiController');
 const generateData = require('../controllers/openaiController');
+const { showUserData } = require('../controllers/userController');
 
 const authRouter = express.Router();
+
+// user
+authRouter.get('/user', verifyToken, showUserData);
 
 // pcos feature
 authRouter.get('/pcos', verifyToken, createUserAnswer);
 authRouter.post('/pcos', verifyToken, generateData);
 
-// bmi feature
+// history feature
 authRouter.post('/pcos/history', verifyToken, createHistory);
 authRouter.get('/pcos/history', verifyToken, showAllUserHistory);
 authRouter.get('/pcos/response', verifyToken, createTipsAndTrick);

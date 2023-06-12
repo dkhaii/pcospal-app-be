@@ -87,24 +87,24 @@ const createUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username) {
+  if (!email) {
     return res.status(400).json(
-      responseClient('error', 'please fill in the username', []),
+      responseClient('error', 'please fill in your email', []),
     );
   }
 
   if (!password) {
     return res.status(400).json(
-      responseClient('error', 'please fill in the password', []),
+      responseClient('error', 'please fill in your password', []),
     );
   }
 
   try {
     const user = await User.findOne({
       where: {
-        username,
+        email,
       },
     });
 
@@ -124,8 +124,12 @@ const loginUser = async (req, res) => {
 
     jwt.sign(
       {
-        userId: user.userId,
-        username: user.username,
+        user_id: user.user_id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone_number: user.phone_number,
+        birthday: user.birthday,
       },
       JWT_SECRET_KEY,
       {
@@ -139,8 +143,12 @@ const loginUser = async (req, res) => {
         return res.status(200).json(
           responseClient('success', 'login successfully', {
             user: {
-              userId: user.userId,
-              username: user.username,
+              user_id: user.user_id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              phone_number: user.phone_number,
+              birthday: user.birthday,
             },
             token,
           }),
@@ -154,7 +162,31 @@ const loginUser = async (req, res) => {
   }
 };
 
+const showUserData = async (req, res) => {
+  try {
+    const { user } = req;
+
+    const datas = {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone_number: user.phone_number,
+      email: user.email,
+      birthday: user.birthday,
+    };
+    console.log(datas);
+
+    return res.status(200).json(
+      responseClient('success', 'showing user data', datas),
+    );
+  } catch (error) {
+    return res.status(500).json(
+      responseClient('error', 'error', error),
+    );
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
+  showUserData,
 };
