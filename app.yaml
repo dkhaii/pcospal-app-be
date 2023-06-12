@@ -5,7 +5,9 @@ env_variables:
   DB_PASSWORD:
   DB_DATABASE: pcospal
   DB_DIALECT: mysql
-  DB_SOCKET: 
+  DB_SOCKET:
+
+  APP_ENV: development 
 
   JWT_SECRET_KEY: MuchSecretVerySecureSoSafe
   OPENAI_API_KEY: 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

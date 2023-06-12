@@ -21,7 +21,7 @@ database.user = require('./userModel')(sequelize, Sequelize);
 database.history = require('./historyModel')(sequelize, Sequelize);
 
 database.history.belongsTo(database.user, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
 });
 database.user.hasMany(database.history);
 

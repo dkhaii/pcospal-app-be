@@ -9,11 +9,42 @@ const User = database.user;
 const { JWT_SECRET_KEY } = parseAppYaml();
 
 const createUser = async (req, res) => {
-  const { username, password } = req.body;
+  const {
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    birthday,
+    password,
+  } = req.body;
 
-  if (!username) {
+  if (!firstName) {
     return res.status(400).json(
-      responseClient('error', 'please fill in the username', []),
+      responseClient('error', 'please fill in your first name', []),
+    );
+  }
+
+  if (!lastName) {
+    return res.status(400).json(
+      responseClient('error', 'please fill in your last name', []),
+    );
+  }
+
+  if (!phoneNumber) {
+    return res.status(400).json(
+      responseClient('error', 'please fill in your phone number', []),
+    );
+  }
+
+  if (!email) {
+    return res.status(400).json(
+      responseClient('error', 'please fill in your email', []),
+    );
+  }
+
+  if (!birthday) {
+    return res.status(400).json(
+      responseClient('error', 'please fill in your email', []),
     );
   }
 
@@ -30,11 +61,15 @@ const createUser = async (req, res) => {
 
   try {
     const createdData = {
-      userId,
-      username,
+      user_id: userId,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phoneNumber,
+      email,
+      birthday,
       password: hashedPassword,
-      createdAt,
-      updatedAt,
+      created_at: createdAt,
+      updated_at: updatedAt,
     };
 
     const user = await User.create(createdData);

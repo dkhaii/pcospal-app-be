@@ -13,20 +13,35 @@ const {
   DB_PASSWORD,
   DB_DIALECT,
   DB_SOCKET,
+  APP_ENV,
 } = parseAppYaml();
 
-const database = new Sequelize({
-  dialect: DB_DIALECT,
-  dialectOptions: {
-    socketPath: `/cloudsql/${DB_SOCKET}`,
-  },
-  host: DB_HOST,
-  username: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_DATABASE,
-  ssl: {
-    ca: serviceAccountKey,
-  },
-});
+let database;
+
+if (APP_ENV === 'production') {
+  database = new Sequelize({
+    dialect: DB_DIALECT,
+    dialectOptions: {
+      socketPath: `/cloudsql/${DB_SOCKET}`,
+    },
+    host: DB_HOST,
+    username: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
+    ssl: {
+      ca: serviceAccountKey,
+    },
+  });
+}
+
+if (APP_ENV === 'development') {
+  database = new Sequelize({
+    dialect: DB_DIALECT,
+    host: DB_HOST,
+    username: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
+  });
+}
 
 module.exports = database;
