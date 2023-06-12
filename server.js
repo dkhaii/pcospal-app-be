@@ -6,12 +6,12 @@ const routes = require('./routes/route');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const { PORT } = process.env;
+const port = 8080;
 
 app.use(bodyParser.json());
 app.use('/api', routes);
 app.use('/api/auth', authRoutes);
 
-app.listen(PORT, () => {
-  console.log(`app is running in port ${PORT}`);
+app.listen(port, () => {
+  console.log(`app is running in port ${port}`);
 });

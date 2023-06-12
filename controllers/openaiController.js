@@ -1,5 +1,8 @@
 const { Configuration, OpenAIApi } = require('openai');
 const { responseCustom, gptResponse, responseClient } = require('../helper');
+const parseAppYaml = require('../config/environment');
+
+const { OPENAI_API_KEY } = parseAppYaml();
 
 const formatJsonData = (jsonData) => {
   const formattedData = [];
@@ -23,7 +26,7 @@ const formatJsonData = (jsonData) => {
 
 const generateData = async (req, res) => {
   const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -50,23 +53,23 @@ const generateData = async (req, res) => {
       console.log('generated gpt data:');
       console.log(gptResponse.data);
 
-      return res
-        .status(200)
-        .json(
-          responseClient(
-            'success',
-            'successfuly generated data',
-            gptResponse.data,
-          ),
-        );
+      return res.status(200).json(
+        responseClient(
+          'success',
+          'successfuly generated data',
+          gptResponse.data,
+        ),
+      );
     } catch (error) {
-      return res.status(500).json(responseClient('error', 'error', error));
+      return res.status(500).json(
+        responseClient('error', 'error', error),
+      );
     }
   }
 
-  return res
-    .status(404)
-    .json(responseClient('fail', 'no pcos data created', []));
+  return res.status(404).json(
+    responseClient('fail', 'no pcos data created', []),
+  );
 };
 
 module.exports = generateData;
