@@ -10,8 +10,8 @@ router.post('/', (req, res) => {
       'success',
       'Selamat Datang di Welcome :) xixi',
       {
-        backendDev: '@gerinmordekhaii',
-        cloudEng: 'bang habib',
+        backendDev: 'gerin tampan sekali',
+        cloudEng: 'bang habib sang penakluk awan',
       },
     ),
   );
