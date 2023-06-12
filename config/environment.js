@@ -2,7 +2,7 @@ const fs = require('fs');
 const yaml = require('yaml');
 
 const parseAppYaml = () => {
-  const appYaml = fs.readFileSync('../app.yaml', 'utf8');
+  const appYaml = fs.readFileSync('app.yaml', 'utf8');
   const appYamlData = yaml.parse(appYaml);
 
   const { DB_HOST } = appYamlData.env_variables;
