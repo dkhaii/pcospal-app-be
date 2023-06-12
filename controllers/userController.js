@@ -3,8 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../models/models');
 const { responseClient, responseCustom } = require('../helper');
+const parseAppYaml = require('../config/environment');
 
 const User = database.user;
+const { JWT_SECRET_KEY } = parseAppYaml();
 
 const createUser = async (req, res) => {
   const { username, password } = req.body;
@@ -39,11 +41,13 @@ const createUser = async (req, res) => {
 
     console.log(user);
 
-    return res
-      .status(200)
-      .json(responseClient('success', 'user created successfully', user));
+    return res.status(200).json(
+      responseClient('success', 'user created successfully', user),
+    );
   } catch (error) {
-    return res.status(500).json(responseClient('failed', 'error', error));
+    return res.status(500).json(
+      responseClient('failed', 'error', error),
+    );
   }
 };
 
@@ -70,17 +74,17 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      return res
-        .status(404)
-        .json(responseClient('error', 'user not found', []));
+      return res.status(404).json(
+        responseClient('error', 'user not found', []),
+      );
     }
 
     const isPassword = bcrypt.compareSync(password, user.password);
 
     if (!isPassword) {
-      return res
-        .status(401)
-        .json(responseClient('error', 'wrong password', []));
+      return res.status(401).json(
+        responseClient('error', 'wrong password', []),
+      );
     }
 
     jwt.sign(
@@ -88,7 +92,7 @@ const loginUser = async (req, res) => {
         userId: user.userId,
         username: user.username,
       },
-      process.env.JWT_SECRET_KEY,
+      JWT_SECRET_KEY,
       {
         expiresIn: 86400,
       },
