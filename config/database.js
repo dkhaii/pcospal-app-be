@@ -1,13 +1,22 @@
 const { Sequelize } = require('sequelize');
+const parseAppYaml = require('./environment');
+
+const {
+  DB_DATABASE,
+  DB_USER,
+  DB_PASSWORD,
+  DB_DIALECT,
+  DB_SOCKET,
+} = parseAppYaml();
 
 const database = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  DB_DATABASE,
+  DB_USER,
+  DB_PASSWORD,
   {
-    dialect: process.env.DB_DIALECT,
+    dialect: DB_DIALECT,
     dialectOptions: {
-      socketPath: `/cloudsql/${process.env.DB_SOCKET}`,
+      socketPath: `/cloudsql/${DB_SOCKET}`,
     },
   },
 );
