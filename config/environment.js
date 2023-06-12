@@ -1,8 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const yaml = require('yaml');
 
 const parseAppYaml = () => {
-  const appYaml = fs.readFileSync('app.yaml', 'utf8');
+  const filePath = path.resolve('./app.yaml');
+  const appYaml = fs.readFileSync(filePath, 'utf8');
   const appYamlData = yaml.parse(appYaml);
 
   const { DB_HOST } = appYamlData.env_variables;
