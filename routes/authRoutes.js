@@ -8,6 +8,7 @@ const {
 const createTipsAndTrick = require('../controllers/openaiController');
 const generateData = require('../controllers/openaiController');
 const { showUserData } = require('../controllers/userController');
+const getClassificationResult = require('../controllers/classificationResultController');
 
 const authRouter = express.Router();
 
@@ -16,6 +17,7 @@ authRouter.get('/user', verifyToken, showUserData);
 
 // pcos feature
 authRouter.post('/pcos', verifyToken, createUserAnswer);
+authRouter.get('/pcos/result', verifyToken, getClassificationResult);
 authRouter.post('/pcos/result', verifyToken, generateData);
 
 // history feature
