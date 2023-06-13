@@ -4,7 +4,7 @@ const responseClient = (status, message, data) => ({
   data,
 });
 
-const responseCustom = {};
+const responseCustom = [];
 
 const gptResponse = {};
 

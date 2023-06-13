@@ -15,8 +15,8 @@ const authRouter = express.Router();
 authRouter.get('/user', verifyToken, showUserData);
 
 // pcos feature
-authRouter.get('/pcos', verifyToken, createUserAnswer);
-authRouter.post('/pcos', verifyToken, generateData);
+authRouter.post('/pcos', verifyToken, createUserAnswer);
+authRouter.post('/pcos/result', verifyToken, generateData);
 
 // history feature
 authRouter.post('/pcos/history', verifyToken, createHistory);

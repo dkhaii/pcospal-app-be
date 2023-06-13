@@ -30,39 +30,49 @@ const generateData = async (req, res) => {
   });
   const openai = new OpenAIApi(configuration);
 
-  if (Object.keys(responseCustom).length > 0) {
-    const obj = responseCustom.datas;
-    console.log('obj di generate data:');
-    console.log(obj);
-
-    const userAnswer = formatJsonData(obj);
-    console.log('user answer di generate data:');
-    console.log(userAnswer);
-
-    const instruction = `Please generate tips and tricks to avoid PCOS disease based on the following data: ${userAnswer}`;
-
+  if (responseCustom.length > 0) {
     try {
-      const completion = await openai.createCompletion({
-        model: 'text-davinci-003',
-        prompt: instruction,
-        max_tokens: 500,
-        temperature: 0.4,
-      });
+      const { user } = req;
+      const userId = user.user_id;
+      console.log(userId);
 
-      gptResponse.data = completion.data.choices[0].text;
-      console.log('generated gpt data:');
-      console.log(gptResponse.data);
+      const pcosData = responseCustom.find((obj) => obj.id === userId);
+      console.log('obj di generate data:');
+      console.log(pcosData);
 
-      return res.status(200).json(
-        responseClient(
-          'success',
-          'successfuly generated data',
-          gptResponse.data,
-        ),
-      );
+      const userAnswer = formatJsonData(pcosData);
+      console.log('user answer di generate data:');
+      console.log(userAnswer);
+
+      const instruction = `Please generate tips and tricks to avoid PCOS disease based on the following data: ${userAnswer}`;
+
+      try {
+        const completion = await openai.createCompletion({
+          model: 'text-davinci-003',
+          prompt: instruction,
+          max_tokens: 500,
+          temperature: 0.4,
+        });
+
+        gptResponse.data = completion.data.choices[0].text;
+        console.log('generated gpt data:');
+        console.log(gptResponse.data);
+
+        return res.status(200).json(
+          responseClient(
+            'success',
+            'successfuly generated data',
+            gptResponse.data,
+          ),
+        );
+      } catch (error) {
+        return res.status(500).json(
+          responseClient('error', 'error', error),
+        );
+      }
     } catch (error) {
       return res.status(500).json(
-        responseClient('error', 'error', error),
+        responseClient('error', 'no user logged in', error),
       );
     }
   }

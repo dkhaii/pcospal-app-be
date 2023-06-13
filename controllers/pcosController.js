@@ -3,45 +3,17 @@ const {
   responseCustom,
 } = require('../helper');
 
-const validateNumberData = (value) => {
-  if (typeof value !== 'number') {
-    return false;
-  }
-
-  return true;
-};
-
-const validateYesNo = (value) => {
-  if (value === 'Yes') {
-    return 1;
-  }
-
-  return 0;
-};
-
-const validateYesNoDatas = (userAnswer) => {
-  const datas = {};
-
-  for (let i = 0; i < userAnswer.length; i++) {
-    const obj = userAnswer[i];
-    const objData = obj.data;
-
-    datas[obj.type] = validateYesNo(objData);
-  }
-
-  return datas;
-};
-
 const validateDatas = (userAnswer) => {
   const responseError = {};
 
   for (let i = 0; i < userAnswer.length; i++) {
     const obj = userAnswer[i];
-    const objData = obj.data;
 
-    const numData = validateNumberData(objData);
+    if (typeof obj.value !== 'number') {
+      obj.value = false;
+    }
 
-    if (numData === false) {
+    if (obj.value === false) {
       const objType = obj.type;
       responseError[objType] = `${objType} must be number`;
     }
@@ -50,12 +22,43 @@ const validateDatas = (userAnswer) => {
   return responseError;
 };
 
-const validateCycleData = (cycle) => {
-  if (cycle === 'regular') {
-    return 2;
-  }
+const validateYesNoDatas = (userAnswer) => {
+  const datas = {};
 
-  return 4;
+  for (let i = 0; i < userAnswer.length; i++) {
+    const obj = userAnswer[i];
+    const objType = obj.type;
+
+    if (obj.value === 'yes') {
+      obj.value = 1;
+    }
+
+    if (obj.value === 'no') {
+      obj.value = 0;
+    }
+
+    datas[objType] = obj.value;
+  }
+  return datas;
+};
+
+const validateCycleValue = (userAnswer) => {
+  const datas = {};
+
+  for (let i = 0; i < userAnswer.length; i++) {
+    const obj = userAnswer[i];
+    const objType = obj.type;
+
+    if (obj.value === 'regular') {
+      obj.value = 2;
+    }
+    if (obj.value === 'irregular') {
+      obj.value = 4;
+    }
+
+    datas[objType] = obj.value;
+  }
+  return datas;
 };
 
 const filterDataOutput = (datas) => {
@@ -64,9 +67,9 @@ const filterDataOutput = (datas) => {
   for (let i = 0; i < datas.length; i++) {
     const obj = datas[i];
     const objType = obj.type;
-    const objData = obj.data;
+    const objValue = obj.value;
 
-    filteredData[objType] = objData;
+    filteredData[objType] = objValue;
   }
 
   return filteredData;
@@ -75,9 +78,9 @@ const filterDataOutput = (datas) => {
 const assignUserAnswer = (datas) => {
   const userAnswer = datas;
 
-  responseCustom.datas = datas;
+  responseCustom.push(datas);
   console.log('data responseCustom');
-  console.log(responseCustom.datas);
+  console.log(responseCustom);
 
   return userAnswer;
 };
@@ -102,58 +105,61 @@ const createUserAnswer = async (req, res) => {
   const numberDatas = [
     {
       type: 'age',
-      data: age,
+      value: age,
     },
     {
       type: 'bmi',
-      data: bmi,
+      value: bmi,
     },
     {
       type: 'pulseRate',
-      data: pulseRate,
-    },
-    {
-      type: 'cycle',
-      data: cycle,
+      value: pulseRate,
     },
     {
       type: 'yearsOfMarriage',
-      data: yearsOfMarriage,
+      value: yearsOfMarriage,
     },
     {
       type: 'hip',
-      data: hip,
+      value: hip,
     },
     {
       type: 'waist',
-      data: waist,
+      value: waist,
+    },
+  ];
+
+  const cycleValue = [
+    {
+      type: 'cycle',
+      value: cycle,
     },
   ];
 
   const yesNoDatas = [
     {
       type: 'weightGain',
-      data: weightGain,
+      value: weightGain,
     },
     {
       type: 'hairGrowth',
-      data: hairGrowth,
+      value: hairGrowth,
     },
     {
       type: 'skinDarkening',
-      data: skinDarkening,
+      value: skinDarkening,
     },
     {
       type: 'hairLoss',
-      data: hairLoss,
+      value: hairLoss,
     },
     {
       type: 'pimples',
-      data: pimples,
+      value: pimples,
     },
     {
       type: 'fastFood',
-      data: fastFood,
+      value: fastFood,
     },
   ];
 
@@ -163,13 +169,23 @@ const createUserAnswer = async (req, res) => {
     return res.status(401).json(validatedNumberDatas);
   }
 
-  const answerDatas = filterDataOutput(numberDatas.concat(yesNoDatas));
-  console.log(answerDatas);
+  try {
+    const { user } = req;
+    const userId = user.user_id;
 
-  await assignUserAnswer(answerDatas);
+    const answerDatas = filterDataOutput(numberDatas.concat(cycleValue, yesNoDatas));
+    answerDatas.id = userId;
+    console.log(answerDatas);
+
+    await assignUserAnswer(answerDatas);
+  } catch (error) {
+    return res.status(500).json(
+      responseClient('error', 'no user logged in', error),
+    );
+  }
 
   const filteredNumberDatas = filterDataOutput(numberDatas);
-  const validatedCycleData = validateCycleData(cycle);
+  const validatedCycleData = validateCycleValue(cycleValue);
   const validatedYesNoDatas = validateYesNoDatas(yesNoDatas);
 
   const validatedDatas = {

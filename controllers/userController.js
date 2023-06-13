@@ -122,15 +122,17 @@ const loginUser = async (req, res) => {
       );
     }
 
+    const userPayload = {
+      user_id: user.user_id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone_number: user.phone_number,
+      birthday: user.birthday,
+    };
+
     jwt.sign(
-      {
-        user_id: user.user_id,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone_number: user.phone_number,
-        birthday: user.birthday,
-      },
+      userPayload,
       JWT_SECRET_KEY,
       {
         expiresIn: 86400,
@@ -142,14 +144,7 @@ const loginUser = async (req, res) => {
 
         return res.status(200).json(
           responseClient('success', 'login successfully', {
-            user: {
-              user_id: user.user_id,
-              email: user.email,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              phone_number: user.phone_number,
-              birthday: user.birthday,
-            },
+            user: userPayload,
             token,
           }),
         );
@@ -166,17 +161,17 @@ const showUserData = async (req, res) => {
   try {
     const { user } = req;
 
-    const datas = {
+    const userPayload = {
       first_name: user.first_name,
       last_name: user.last_name,
       phone_number: user.phone_number,
       email: user.email,
       birthday: user.birthday,
     };
-    console.log(datas);
+    console.log(userPayload);
 
     return res.status(200).json(
-      responseClient('success', 'showing user data', datas),
+      responseClient('success', 'showing user data', userPayload),
     );
   } catch (error) {
     return res.status(500).json(

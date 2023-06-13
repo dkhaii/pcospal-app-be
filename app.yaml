@@ -10,6 +10,6 @@ env_variables:
   APP_ENV: development 
 
   JWT_SECRET_KEY: MuchSecretVerySecureSoSafe
-  OPENAI_API_KEY: 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
+  OPENAI_API_KEY: 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
 beta_settings:
   cloud_sql_instances:
