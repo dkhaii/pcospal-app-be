@@ -37,6 +37,7 @@ const generateData = async (req, res) => {
       console.log(userId);
 
       const pcosData = responseCustom.find((obj) => obj.id === userId);
+      delete pcosData.id;
       console.log('obj di generate data:');
       console.log(pcosData);
 
