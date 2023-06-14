@@ -5,7 +5,6 @@ const responseClient = (status, message, data) => ({
 });
 
 const responseCustom = [];
-
 const gptResponse = {};
 
 module.exports = {

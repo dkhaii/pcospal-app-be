@@ -1,10 +1,10 @@
 const { Sequelize } = require('sequelize');
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 const parseAppYaml = require('./environment');
 
-const filePath = path.resolve('./serviceaccountkey.json');
-const serviceAccountKey = fs.readFileSync(filePath);
+// const filePath = path.resolve('./serviceaccountkey.json');
+// const serviceAccountKey = fs.readFileSync(filePath);
 
 const {
   DB_HOST,
@@ -28,9 +28,15 @@ if (APP_ENV === 'production') {
     username: DB_USER,
     password: DB_PASSWORD,
     database: DB_DATABASE,
-    ssl: {
-      ca: serviceAccountKey,
+    pool: {
+      max: 15,
+      min: 5,
+      acquire: 30000,
+      idle: 15000,
     },
+    // ssl: {
+    //   ca: serviceAccountKey,
+    // },
   });
 }
 
