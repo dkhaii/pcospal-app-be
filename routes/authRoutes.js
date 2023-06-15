@@ -1,6 +1,9 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyAuthMiddleware');
-const createUserAnswer = require('../controllers/pcosController');
+const {
+  createUserAnswer,
+  calculateBmi,
+} = require('../controllers/pcosController');
 const {
   createHistory,
   showAllUserHistory,
@@ -16,6 +19,7 @@ const authRouter = express.Router();
 authRouter.get('/user', verifyToken, showUserData);
 
 // pcos feature
+authRouter.post('/calculate-bmi', verifyToken, calculateBmi);
 authRouter.post('/pcos', verifyToken, createUserAnswer);
 authRouter.get('/pcos/result', verifyToken, getClassificationResult);
 authRouter.post('/pcos/result', verifyToken, generateData);
