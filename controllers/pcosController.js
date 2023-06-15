@@ -85,20 +85,35 @@ const assignUserAnswer = (datas) => {
   return userAnswer;
 };
 
-const calculateBmi = (bodyWeight, bodyHeight) => {
+const calculateBmi = (req, res) => {
+  const { bodyWeight, bodyHeight } = req.body;
+
+  if (!bodyWeight) {
+    return res.status(404).json(
+      responseClient('error', 'please insert your weight', []),
+    );
+  }
+
+  if (!bodyHeight) {
+    return res.status(404).json(
+      responseClient('error', 'please insert your height', []),
+    );
+  }
+
   const bodyHeightToMeter = bodyHeight / 100;
 
   const calculate = bodyWeight / (bodyHeightToMeter * bodyHeightToMeter);
   const roundCalculate = Math.round(calculate * 10) / 10;
 
-  return roundCalculate;
+  return res.status(200).json(
+    responseClient('success', 'calculated bmi', roundCalculate),
+  );
 };
 
 const createUserAnswer = async (req, res) => {
   const {
     age,
-    bodyWeight,
-    bodyHeight,
+    bmi,
     pulseRate,
     cycle,
     yearsOfMarriage,
@@ -118,12 +133,8 @@ const createUserAnswer = async (req, res) => {
       value: age,
     },
     {
-      type: 'bodyWeight',
-      value: bodyWeight,
-    },
-    {
-      type: 'bodyHeight',
-      value: bodyHeight,
+      type: 'bmi',
+      value: bmi,
     },
     {
       type: 'pulseRate',
@@ -183,17 +194,17 @@ const createUserAnswer = async (req, res) => {
     return res.status(401).json(validatedNumberDatas);
   }
 
-  const bmiValue = calculateBmi(bodyWeight, bodyHeight);
-  const bmi = [{
-    type: 'bmi',
-    value: bmiValue,
-  }];
+  // const bmiValue = calculateBmi(bodyWeight, bodyHeight);
+  // const bmi = [{
+  //   type: 'bmi',
+  //   value: bmiValue,
+  // }];
 
   try {
     const { user } = req;
     const userId = user.user_id;
 
-    const userAnswer = numberDatas.concat(bmi, cycleValue, yesNoDatas);
+    const userAnswer = numberDatas.concat(cycleValue, yesNoDatas);
 
     const filteredDatas = filterDataOutput(userAnswer);
     delete filteredDatas.bodyWeight;
@@ -225,4 +236,4 @@ const createUserAnswer = async (req, res) => {
   }
 };
 
-module.exports = createUserAnswer;
+module.exports = { createUserAnswer, calculateBmi };
