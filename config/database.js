@@ -34,9 +34,6 @@ if (APP_ENV === 'production') {
       acquire: 30000,
       idle: 15000,
     },
-    // ssl: {
-    //   ca: serviceAccountKey,
-    // },
   });
 }
 

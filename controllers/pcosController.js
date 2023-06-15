@@ -79,8 +79,6 @@ const assignUserAnswer = (datas) => {
   const userAnswer = datas;
 
   responseCustom.push(datas);
-  console.log('data responseCustom');
-  console.log(responseCustom);
 
   return userAnswer;
 };
@@ -194,12 +192,6 @@ const createUserAnswer = async (req, res) => {
     return res.status(401).json(validatedNumberDatas);
   }
 
-  // const bmiValue = calculateBmi(bodyWeight, bodyHeight);
-  // const bmi = [{
-  //   type: 'bmi',
-  //   value: bmiValue,
-  // }];
-
   try {
     const { user } = req;
     const userId = user.user_id;
@@ -210,7 +202,6 @@ const createUserAnswer = async (req, res) => {
     delete filteredDatas.bodyWeight;
     delete filteredDatas.bodyHeight;
     filteredDatas.id = userId;
-    console.log(filteredDatas);
 
     await assignUserAnswer(filteredDatas);
 
@@ -224,7 +215,6 @@ const createUserAnswer = async (req, res) => {
       ...validatedYesNo,
     };
     delete validatedDatas.id;
-    console.log(validatedDatas);
 
     return res.status(200).json(
       responseClient('success', 'getting user input', validatedDatas),

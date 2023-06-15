@@ -74,8 +74,6 @@ const createUser = async (req, res) => {
 
     const user = await User.create(createdData);
 
-    console.log(user);
-
     return res.status(200).json(
       responseClient('success', 'user created successfully', user),
     );
@@ -168,7 +166,6 @@ const showUserData = async (req, res) => {
       email: user.email,
       birthday: user.birthday,
     };
-    console.log(userPayload);
 
     return res.status(200).json(
       responseClient('success', 'showing user data', userPayload),
