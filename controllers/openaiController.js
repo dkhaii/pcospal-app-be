@@ -1,8 +1,8 @@
 const { Configuration, OpenAIApi } = require('openai');
 const { responseCustom, gptResponse, responseClient } = require('../helper');
-const parseAppYaml = require('../config/environment');
+// const parseAppYaml = require('../config/environment');
 
-const { OPENAI_API_KEY } = parseAppYaml();
+const { OPENAI_API_KEY } = process.env;
 
 const formatJsonData = (jsonData) => {
   const formattedData = [];

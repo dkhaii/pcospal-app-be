@@ -6,13 +6,14 @@ const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const port = 8080;
+const PORT = 8080;
+const HOST = '0.0.0.0';
 
 app.use(bodyParser.json());
 app.use('/', homeRoutes);
 app.use('/api', publicRoutes);
 app.use('/api/auth', authRoutes);
 
-app.listen(port, () => {
-  console.log(`app is running in port ${port}`);
+app.listen(PORT, HOST, () => {
+  console.log(`app is running on http://${HOST}:${PORT}`);
 });
