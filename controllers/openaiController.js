@@ -34,16 +34,11 @@ const generateData = async (req, res) => {
     try {
       const { user } = req;
       const userId = user.user_id;
-      console.log(userId);
 
       const pcosData = responseCustom.find((obj) => obj.id === userId);
       delete pcosData.id;
-      console.log('obj di generate data:');
-      console.log(pcosData);
 
       const userAnswer = formatJsonData(pcosData);
-      console.log('user answer di generate data:');
-      console.log(userAnswer);
 
       const instruction = `Please generate tips and tricks to avoid PCOS disease based on the following data: ${userAnswer}`;
 
@@ -56,8 +51,6 @@ const generateData = async (req, res) => {
         });
 
         gptResponse.data = completion.data.choices[0].text;
-        console.log('generated gpt data:');
-        console.log(gptResponse.data);
 
         return res.status(200).json(
           responseClient(

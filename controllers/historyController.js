@@ -15,7 +15,6 @@ const createHistory = async (req, res) => {
   }
 
   const historyDatas = gptResponse.data;
-  console.log(historyDatas);
 
   try {
     const { user } = req;
@@ -27,11 +26,7 @@ const createHistory = async (req, res) => {
       createdAt,
     };
 
-    console.log(createdDatas);
-
     const history = await History.create(createdDatas);
-
-    console.log(history);
 
     return res.status(200).json(
       responseClient('success', 'history created successfully', history),
