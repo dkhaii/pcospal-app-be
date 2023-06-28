@@ -9,7 +9,7 @@ homeRouter.get('/', (req, res) => {
       'success',
       'Selamat Datang di Welcome :)',
       {
-        devOps: 'gerin tampan banget hahaha',
+        devOps: 'gerin tampan banget coy hahaha',
         cloudEng: 'bang habib sang penakluk awan google',
       },
     ),
