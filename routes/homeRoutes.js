@@ -7,7 +7,7 @@ homeRouter.get('/', (req, res) => {
   res.status(200).json(
     responseClient(
       'success',
-      'Selamat Datang di Welcome :) xixi',
+      'Selamat Datang di Welcome :)',
       {
         devOps: 'gerin tampan banget hahaha',
         cloudEng: 'bang habib sang penakluk awan google',
