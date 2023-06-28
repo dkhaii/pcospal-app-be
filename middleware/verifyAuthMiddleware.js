@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-// const parseAppYaml = require('../config/environment');
+const parseAppYaml = require('../config/environment');
 
-const { JWT_SECRET_KEY } = process.env;
+const { JWT_SECRET_KEY } = parseAppYaml();
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;

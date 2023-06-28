@@ -14,17 +14,6 @@ steps:
       sed -i "s/<jwt-secret-key-value>/$$JWT_SECRET_KEY/" app.yaml
       sed -i "s/<openai-api-key-value>/$$OPENAI_API_KEY/" app.yaml
       sed -i "s/<cloud-sql-instances-value>/$$cloud_sql_instances/" app.yaml
-  env:
-    - 'DB_HOST=$$DB_HOST'
-    - 'DB_USER=$$DB_USER'
-    - 'DB_PASSWORD=$$DB_PASSWORD'
-    - 'DB_DATABASE=$$DB_DATABASE'
-    - 'DB_DIALECT=$$DB_DIALECT'
-    - 'DB_SOCKET=$$DB_SOCKET'
-    - 'APP_ENV=$$APP_ENV'
-    - 'JWT_SECRET_KEY=$$JWT_SECRET_KEY'
-    - 'OPENAI_API_KEY=$$OPENAI_API_KEY'
-    - 'cloud_sql_instances=$$cloud_sql_instances'
   secretEnv:
     - DB_HOST
     - DB_USER

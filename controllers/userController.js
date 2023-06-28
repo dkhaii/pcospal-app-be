@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../models/models');
 const { responseClient } = require('../helper');
-// const parseAppYaml = require('../config/environment');
+const parseAppYaml = require('../config/environment');
 
 const User = database.user;
-const { JWT_SECRET_KEY } = process.env;
+const { JWT_SECRET_KEY } = parseAppYaml();
 
 const createUser = async (req, res) => {
   const {
