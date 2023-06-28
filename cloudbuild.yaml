@@ -2,4 +2,28 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'bash'
   args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/531807919327/secrets/DB_HOST/versions/1
+    env: 'DB_HOST'
+  - versionName: projects/531807919327/secrets/DB_USER/versions/1
+    env: 'DB_USER'
+  - versionName: projects/531807919327/secrets/DB_PASSWORD/versions/1
+    env: 'DB_PASSWORD'
+  - versionName: projects/531807919327/secrets/DB_DATABASE/versions/1
+    env: 'DB_DATABASE'
+  - versionName: projects/531807919327/secrets/DB_DIALECT/versions/1
+    env: 'DB_DIALECT'
+  - versionName: projects/531807919327/secrets/DB_SOCKET/versions/1
+    env: 'DB_SOCKET'
+  - versionName: projects/531807919327/secrets/APP_ENV/versions/1
+    env: 'APP_ENV'
+  - versionName: projects/531807919327/secrets/JWT_SECRET_KEY/versions/1
+    env: 'JWT_SECRET_KEY'
+  - versionName: projects/531807919327/secrets/OPENAI_API_KEY/versions/1
+    env: 'OPENAI_API_KEY'
+  - versionName: projects/531807919327/secrets/cloud_sql_instances/versions/1
+    env: 'cloud_sql_instances'
+
 timeout: '1600s'

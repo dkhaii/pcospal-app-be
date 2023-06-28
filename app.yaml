@@ -1,15 +1,15 @@
 runtime: nodejs18
 env_variables: 
-  DB_HOST: localhost
-  DB_USER: root
-  DB_PASSWORD:
-  DB_DATABASE: pcospal
-  DB_DIALECT: mysql
-  DB_SOCKET:
+  DB_HOST: <db-host-value>
+  DB_USER: <db-user-value>
+  DB_PASSWORD: <db-password-value>
+  DB_DATABASE: <db-database-value>
+  DB_DIALECT: <db-dialect-value>
+  DB_SOCKET: <db-socket-value>
 
-  APP_ENV: development 
+  APP_ENV: <app-env-value>
   
-  JWT_SECRET_KEY: MuchSecretVerySecureSoSafe
-  OPENAI_API_KEY: 
+  JWT_SECRET_KEY: <jwt-secret-key-value>
+  OPENAI_API_KEY: <openai-api-key-value>
 beta_settings:
-  cloud_sql_instances:
+  cloud_sql_instances: <cloud-sql-instances-value>
