@@ -62,3 +62,6 @@ availableSecrets:
   - versionName: projects/531807919327/secrets/cloud_sql_instances/versions/1
     env: 'cloud_sql_instances'
 timeout: '1600s'
+options:
+  logging: CLOUD_LOGGING_ONLY
+logsBucket: pcospal_cloud_build_logs
