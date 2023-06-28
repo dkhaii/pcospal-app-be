@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const parseAppYaml = require('./environment');
+// const parseAppYaml = require('./environment');
 
 const {
   DB_HOST,
@@ -9,7 +9,7 @@ const {
   DB_DIALECT,
   DB_SOCKET,
   APP_ENV,
-} = parseAppYaml();
+} = process.env;
 
 let database;
 
