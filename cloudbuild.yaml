@@ -1,6 +1,32 @@
 steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'bash'
+  args: 
+    - '-c'
+    - |
+      sed -i "s/<db-host-value>/$DB_HOST/" app.yaml
+      sed -i "s/<db-user-value>/$DB_USER/" app.yaml
+      sed -i "s/<db-password-value>/$DB_PASSWORD/" app.yaml
+      sed -i "s/<db-database-value>/$DB_DATABASE/" app.yaml
+      sed -i "s/<db-dialect-value>/$DB_DIALECT/" app.yaml
+      sed -i "s/<db-socket-value>/$DB_SOCKET/" app.yaml
+      sed -i "s/<app-env-value>/$APP_ENV/" app.yaml
+      sed -i "s/<jwt-secret-key-value>/$JWT_SECRET_KEY/" app.yaml
+      sed -i "s/<openai-api-key-value>/$OPENAI_API_KEY/" app.yaml
+      sed -i "s/<cloud-sql-instances-value>/$cloud_sql_instances/" app.yaml
+  secretEnv:
+    - DB_HOST
+    - DB_USER
+    - DB_PASSWORD
+    - DB_DATABASE
+    - DB_DIALECT
+    - DB_SOCKET
+    - APP_ENV
+    - JWT_SECRET_KEY
+    - OPENAI_API_KEY
+    - cloud_sql_instances
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
   args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
 availableSecrets:
   secretManager:
